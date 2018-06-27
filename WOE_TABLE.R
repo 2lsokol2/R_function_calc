@@ -19,7 +19,9 @@ while (i<=length(variable)){
   i<-i+1
   
 } 
-result}                
+ pdf("scoring.pdf") 
+  ggplot2.multiplot(result, plot_hist, table_freq, cols=1)
+  dev.off() }                
    
 file[,variable[3]]
 variable<-2:10
