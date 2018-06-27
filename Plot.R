@@ -18,3 +18,14 @@ ggplot(data = cars, aes(x = speed,
                         size = dist)) + geom_point()
 
 ggplot(data = cars, aes(x = speed > 15, y = dist)) + geom_boxplot()
+
+#plot to pdf() 
+pl<- function(...){ 
+   X11()                   #or pdf() 
+   plot(...) 
+   # dev.off()  if pdf() is used 
+   X11()                  # open second graphics device 
+   plot(...) 
+} 
+
+pl(1:10,pch=10) 
