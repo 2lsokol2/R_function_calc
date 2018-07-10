@@ -1,0 +1,116 @@
+data you should write with "" 
+
+woe_function<-function(data,var){
+  library(ggplot2)
+  library(gridExtra)
+  library(grid)
+  library(lattice)
+  #install.packages("lattice")
+  file<-read.csv2(paste0(data,".csv"),dec=".",stringsAsFactors=FALSE,header=TRUE)
+  multi_plot<-lapply(var[1]:var[length(var)],function(x)
+    ggplot(file, aes(file[,x])) + 
+      geom_bar(aes(y = (..count..)/sum(..count..))) + 
+      scale_y_continuous(labels=scales::percent) +
+      geom_text(aes( y = ((..count..)/sum(..count..)),label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.01) +
+      labs(title = names(file)[x], y = "Percent", x = "Class") +
+      theme(axis.text.x = element_text(angle=10, vjust=0.9)) + 
+      theme(plot.margin = unit(c(1,1,1,1), "cm")))
+  oneplot <- marrangeGrob(multi_plot, nrow=2, ncol=1)
+  ggsave("characteristic.pdf", oneplot, width = 9, height = 10)
+}   
+
+woe_function("data_new",8:14)
+
+file<-read.csv(paste0("woetable",".csv"))
+#+ geom_text(aes( label = scales::percent(..prop..),y= ..prop.. ), stat= "count", vjust = -.5))
+#oneplot - function like 'hist(x=..', scale - the physical size of the plot,base_size - base size to compare with titles and ets
+
+br<-read.csv2("score.csv",stringsAsFactors=FALSE,header=TRUE)
+str(br)
+
+ggplot(br, aes(br[,23])) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage") +
+  xlab("Class") + 
+  geom_text(aes( label = scales::percent(..prop..),y= ..prop.. ), stat= "count", vjust = -.5)
+
+
+
+pdf(file="bb.pdf",width=7,height=10)
+par(mar=c(300,300,300,300))
+ggplot(br, aes(br[,26])) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage") +
+  xlab("Class") + 
+  geom_text(aes( y = ((..count..)/sum(..count..)),label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.1) +
+  theme(axis.text.x = element_text(angle=10, vjust=0.9)) +
+  theme(plot.margin = unit(c(1,1,1,1), "cm"))
+dev.off()
+
+
+
+pdf(file="aaaaab.pdf",width=7,height=10)
+par(mar=c(35,35,0,0))
+plot(1:10)
+dev.off()
+
+
+
+t<-data.frame(a=c(1,1,1,3,3,3),b=c("name","name","name","min","min","min"))
+
+ggplot(data=t,aes(x=b,y=a,group=1))+ geom_line()+
+  geom_point()
+
+#install.packages("data.table")
+library(data.table)
+DT = data.table(grp=rep(c("A", "B", "C", "A", "B"), c(2,2,3,1,2)), value=1:10)
+rleid(DT$grp) # get run-length ids
+rleidv(DT, "grp") # same as above
+
+rleid(DT$grp, prefix="grp") # prefix with 'grp'
+
+# get sum of value over run-length groups
+sum<-DT[, sum(value), by=.(grp)]
+DT[, sum(value), by=.(grp, rleid(grp, prefix="grp"))]
+
+counts <- DT[, .(rowCount = .N), by = grp]
+percentage<-(counts[,2]-sum[,2])/counts[,2]
+df<-data.frame(counts[,1],percentage)
+
+
+df2<-data.frame(a2=c("A","A","A","A","B","B","B","C","C"))
+
+df2<-cbind(df2,df[,2])
+
+
+install.packages("plyr")
+library(plyr)
+new_TABLE<- ddply(DT, .(grp), summarize, bestMargin = (sum(value)))
+oldTableNewCol<- ddply(DT, 'grp', transform, bestMargin = (sum(value)))
+
+
+br[,2]<-as.integer(br[,2])
+str(table)
+table<-br[,c(2,7)]
+names(table)
+
+var_har<- ddply(br[,c(2,7,17)], c(names(br[,c(2,7,17)])[2],names(br[,c(2,7,17)])[3]), summarize, bestMargin = (sum(br[,2])))
+aggdata <-aggregate(table, by=list(table[,2]), 
+                    FUN=mean, na.rm=TRUE)
+
+testDF <- data.frame(v1 = c(1,3,5,7,8,3,5,NA,4,5,7,9),
+                     v2 = c(11,33,55,77,88,33,55,NA,44,55,77,99) )
+test<-na.omit(testDF)
+i<-1
+varib<-paste0("variable",i)
+aggregate(x = test, by = list(name=test$v1),count)
+aggregate(x = table, by = list(name=table$Spouse_social_status_ukr),mean)
+
+aggregate(. ~ v1, data = test, FUN = length)
+aggregate(. ~ Spouse_social_status_ukr, data = table, FUN = length)
+names(br)[7]
+
+#https://stackoverflow.com/questions/12064202/apply-several-summary-functions-on-several-variables-by-group-in-one-call
+
