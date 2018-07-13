@@ -25,7 +25,7 @@ file<-read.csv(paste0("woetable",".csv"))
 #+ geom_text(aes( label = scales::percent(..prop..),y= ..prop.. ), stat= "count", vjust = -.5))
 #oneplot - function like 'hist(x=..', scale - the physical size of the plot,base_size - base size to compare with titles and ets
 
-br<-read.csv2("data.csv",stringsAsFactors=FALSE,header=TRUE)
+br<-read.csv2("score.csv",stringsAsFactors=FALSE,header=TRUE)
 str(br)
 
 ggplot(br, aes(br[,23])) + 
@@ -48,6 +48,14 @@ ggplot(br, aes(br[,26])) +
   theme(axis.text.x = element_text(angle=10, vjust=0.9)) +
   theme(plot.margin = unit(c(1,1,1,1), "cm"))
 dev.off()
+
+
+
+pdf(file="aaaaab.pdf",width=7,height=10)
+par(mar=c(35,35,0,0))
+plot(1:10)
+dev.off()
+
 
 
 t<-data.frame(a=c(1,1,1,3,3,3),b=c("name","name","name","min","min","min"))
@@ -85,8 +93,7 @@ oldTableNewCol<- ddply(DT, 'grp', transform, bestMargin = (sum(value)))
 
 br[,2]<-as.integer(br[,2])
 str(table)
-table<-br[,c(9,14)]
-str(br)
+table<-br[,c(2,7)]
 names(table)
 
 var_har<- ddply(br[,c(2,7,17)], c(names(br[,c(2,7,17)])[2],names(br[,c(2,7,17)])[3]), summarize, bestMargin = (sum(br[,2])))
@@ -100,6 +107,8 @@ i<-1
 varib<-paste0("variable",i)
 aggregate(x = test, by = list(name=test$v1),count)
 aggregate(x = table, by = list(name=table$Spouse_social_status_ukr),mean)
+str(table[,1])
+
 
 aggregate(. ~ v1, data = test, FUN = length)
 aggregate(. ~ Spouse_social_status_ukr, data = table, FUN = length)
@@ -108,22 +117,34 @@ aggregate(. ~ Spouse_social_status_ukr, data = table,
           FUN = function(x) c(all = length(x), bad = sum(x) ) )
 
 t1<-aggregate(. ~ Spouse_social_status_ukr, data = table, 
-          FUN = function(x) c(all = length(x), bad = sum(x) ) )
+              FUN = function(x) c(all = length(x), bad = sum(x) ) )
 
 t2<-transform(t1,BR=1-(target_for_calc[,2] / target_for_calc[,1]))[c(1,3)]
 
+table$newcol<-t2$BR[match(t2$Spouse_social_status_ukr,table$Spouse_social_status_ukr)]
+table$newcol<-t2$BR[t2$Spouse_social_status_ukr=table$Spouse_social_status_ukr]
+
+r<-merge(table, t2, by = names(t2)[1])
+result<-r[,c(1,3)]
+
+ggplot(result, aes(x=result[,1],y=result[,2],group=1)) + 
+  geom_point() + geom_line(color="dodgerblue4",size=1)
+
+br<-read.csv2("score.csv",stringsAsFactors=FALSE,header=TRUE)
+str(br)
 
 
 
+lapply(var[1]:var[length(var)],function(x)
+  ggplot(file, aes(file[,x])) + 
+var<-names(table)[2]
 
+    t1<-aggregate(. ~ var, data = table, 
+                  FUN = function(x) c(all = length(x), bad = sum(x) ) )
+    
 
-
-
-
-
-names(br)[7]
-
-#https://stackoverflow.com/questions/12064202/apply-several-summary-functions-on-several-variables-by-group-in-one-call
-
-
-
+    i <- 2
+    by <- table[,2]
+    sub.data.frame <- table[by == unique(by)[i], ]   
+     
+t2<-transform(t1,BR=1-(target_for_calc[,2] / target_for_calc[,1]))[c(1,3)]
