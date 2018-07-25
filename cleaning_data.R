@@ -28,7 +28,7 @@ print(c(class(x), mode(x), storage.mode(x), typeof(x)))
 x <- matrix(cars)
 print(c(class(x), mode(x), storage.mode(x), typeof(x)))
 
-x <- new.env()
+x <- new.env() #http://adv-r.had.co.nz/Environments.html
 print(c(class(x), mode(x), storage.mode(x), typeof(x)))
 
 x <- expression(1 + 1)
