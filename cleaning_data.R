@@ -27,6 +27,18 @@ print(c(class(x), mode(x), storage.mode(x), typeof(x)))
 
 x <- matrix(cars)
 print(c(class(x), mode(x), storage.mode(x), typeof(x)))
+
+x <- new.env()
+print(c(class(x), mode(x), storage.mode(x), typeof(x)))
+
+x <- expression(1 + 1)
+print(c(class(x), mode(x), storage.mode(x), typeof(x)))
+
+x <- quote(y <- 1 + 1)
+print(c(class(x), mode(x), storage.mode(x), typeof(x)))
+
+x <- ls
+print(c(class(x), mode(x), storage.mode(x), typeof(x)))
 #dates
 dates <- c("15-9-2009", "16-07-2008", "17 12-2007", "29-02-2011")
 as.POSIXct(dates, format = "%d-%m-%Y")
@@ -55,14 +67,3 @@ grepl("[a-z]", letters) #TRUE/FALSE
 gender <- c("M", "male ", "Female", "fem.")
 grepl("m", gender, ignore.case = TRUE) #remove sensitive to caps lock
 
-x <- new.env()
-print(c(class(x), mode(x), storage.mode(x), typeof(x)))
-
-x <- expression(1 + 1)
-print(c(class(x), mode(x), storage.mode(x), typeof(x)))
-
-x <- quote(y <- 1 + 1)
-print(c(class(x), mode(x), storage.mode(x), typeof(x)))
-
-x <- ls
-print(c(class(x), mode(x), storage.mode(x), typeof(x)))
