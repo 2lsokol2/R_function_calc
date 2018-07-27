@@ -90,3 +90,30 @@ assignFields <- function(x){
   out[3] <- ifelse(length(i)>0, x[i], NA)
   out
 }
+
+##Mising values
+#age height
+# 1 21 6.0
+# 2 42 5.9
+# 3 18 5.7*
+# 4 21 <NA>
+complete.cases(person)
+## [1] TRUE TRUE TRUE FALSE
+persons_complete <- na.omit(person)
+na.action(persons_complete)
+## 4
+#Remove NA,NaN,inf 
+rm_badval<-function(x){
+  i<-1
+  df<-data.frame()
+  while(i<=ncol(x))
+  {
+    a<-x[,i]
+    if (is.numeric(a)) t[is.infinite(t) | is.nan(t)] <- NA else a
+    i<-i+1
+  }
+na.omit(x)
+}
+rm_badval(data)
+
+
