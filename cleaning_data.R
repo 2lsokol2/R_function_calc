@@ -67,3 +67,26 @@ grepl("[a-z]", letters) #TRUE/FALSE
 gender <- c("M", "male ", "Female", "fem.")
 grepl("m", gender, ignore.case = TRUE) #remove sensitive to caps lock
 
+txt<-readLines("example.txt")
+#
+i<-grepl("^//", txt)
+dat<-txt[!i]
+fieldList <- strsplit(dat, split = ";")
+class(fieldList)
+#input and assigns the values in the right order.
+x<-strsplit(dat, split = ";")
+x<-x[1]
+assignFields <- function(x){
+  out <- character(3)
+  # get names
+  i <- x[[1]][grep("[[:alpha:]]",x)]
+  out[1] <- i
+  # get birth date (if any)
+  i <- which(as.numeric(x) < 1890)
+  i <- x[x < 1890]
+  out[2] <- ifelse(length(i)>0, x[i], NA)
+  # get death date (if any)
+  i <- which(as.numeric(x) > 1890)
+  out[3] <- ifelse(length(i)>0, x[i], NA)
+  out
+}
