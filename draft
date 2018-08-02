@@ -184,14 +184,14 @@ yy<-ggarrange(y1,y2,
 ggexport(yy, filename = "13.pdf")  
 
 names(data)
-data[,4]
-ggplot(data, aes(new) + 
+ggplot(data, aes(gender)) + 
   geom_bar(aes(y = (..count..)/sum(..count..))) + 
   scale_y_continuous(labels=scales::percent) +
   geom_text(aes( y = ((..count..)/sum(..count..)),label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.01) +
   labs(title = "names(data)", y = "Percent", x = "Class") +
   theme(axis.text.x = element_text(angle=10, vjust=0.9)) + 
-  theme(plot.margin = unit(c(1,1,1,1), "cm")))
+  theme(plot.margin = unit(c(1,1,1,1), "cm"))
+
   
   woe_function<-function(data,var=0){
   library(ggplot2)
