@@ -1,48 +1,3 @@
-#data you should write with "" 
-
-woe_function<-function(data,variable=1){
-  library(ggplot2)
-  library(devtools)
-  library(easyGgplot2)
-  library(plyr)
-  library(knitr)
-  
-  file<-read.table(paste0(data,".csv"),sep=",",stringsAsFactors=FALSE,,na.strings = c("NULL","NA"),header=TRUE)
-  plot0<-ggplot(data = file, aes(x = file[,variable[1]])) + geom_bar() 
-  table0<-kable(data.frame(count(t,variable[1])))
-  result<-result<-ggplot2.multiplot(plot0, table0, cols=1)
-  i<-variable[2]
-  while (i<=length(variable)){
-    plot_hist<-ggplot(data = file, aes(x = file[,variable[i]])) + geom_bar() 
-    table_freq<-kable(data.frame(count(t,variable[i])))
-    result<-ggplot2.multiplot(result, plot_hist, table_freq, cols=1)
-    i<-i+1
-    
-  } 
-  result}                
-
-file[,variable[3]]
-variable<-2:10
-
-
-woe_function("woe",2:6)                
-
-
-#install.packages("ggplot")
-#install.packages("ggplot2")
-#install.packages("easyGgplot2")
-#install_github("easyGgplot2"/"kassambara")
-#install.packages("devtools")
-#install.packages("knitr")
-#> `geom_smooth()` using method = 'loess'
-#install.packages("easyGgplot2")
-#http://www.sthda.com/english/wiki/ggplot2-multiplot-put-multiple-graphs-on-the-same-page-using-ggplot2
-
-str(t)
-
-t<-read.table("woe.csv",sep=",",stringsAsFactors=FALSE,header=TRUE)
-#install.packages("plyr")
-#plyr - like group by in sql
 library(plyr)
 library(knitr)
 table<-data.frame(count(t,"rank"))
@@ -123,7 +78,31 @@ ifelse(a>0,a,"not")
 set.seed(10)
 
 
-
+   # Make list of variable names to loop over.
+    var_list = combn(names(iris)[1:3], 2, simplify=FALSE)
+  
+  # Make plots.
+  plot_list = list()
+  for (i in 1:3) {
+    p = ggplot(iris, aes_string(x=var_list[[i]][1], y=var_list[[i]][2])) +
+      geom_point(size=3, aes(colour=Species))
+    plot_list[[i]] = p
+  }
+  
+  # Save plots to tiff. Makes a separate file for each plot.
+  for (i in 1:3) {
+    file_name = paste("iris_plot_", i, ".tiff", sep="")
+    tiff(file_name)
+    print(plot_list[[i]])
+    dev.off()
+  }
+  
+  # Another option: create pdf where each page is a separate plot.
+  pdf("plots.pdf")
+  for (i in 1:3) {
+    print(plot_list[[i]])
+  }
+  dev.off()
 
 
 
