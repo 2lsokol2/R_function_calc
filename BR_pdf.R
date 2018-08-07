@@ -200,8 +200,33 @@ ggplot(data, aes(gender)) +
   theme(axis.text.x = element_text(angle=10, vjust=0.9)) + 
   theme(plot.margin = unit(c(1,1,1,1), "cm"))
 
-  
-  
+ ###begining of loop 
+  begin_ncol<-ncol(file)
+i<-2
+while (i<=begin_ncol){
+#t1-aggregate file for create BR
+t1<-aggregate(. ~ file[,i], data = file[c(names(file)[1],names(file)[i])],
+              FUN = function(x) c(all = length(x), bad = sum(x) ) )[,c(1,2)]
+
+#counting BR(new columns in aggregate func in R is MATRIX)
+t2<-transform(t1,br=1-(t1[,2][,2] / t1[,2][,1]))[,c(1,3)]
+
+#recall "t2",cauth next action will be join "t2" and "file",
+#(we must have united column with common name)
+#"BR" column begins with "WW_"
+#(all variables soryed by alphabet,we split table by 2 part,with "BR" with WW_" and will be in the right part of table) )
+names(t2)<-c(names(file)[i],paste0("WW_",names(file)[i]))
+
+#add  new column "BR"to our "file" table
+file<-merge(file,t2,by.x=names(file)[i],by.y=names(t2)[1])
+
+#again sort column,cauth "BR" goes to the end,but joined column goes to the begining,totaly bad column)
+file<-cbind(file$target,(file[ , sort(names(file[,-which( colnames(file)=="target")]))]))
+
+#recall first column,cauth automatically programe calls it "file$target"
+names(file)[1]<-"target"
+i<-i+1
+}
   
   
   
