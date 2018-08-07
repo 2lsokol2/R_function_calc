@@ -35,3 +35,6 @@ str(mydata)
 df = data.frame(c1=1:4, c2=letters[1:4], c3=5:8)
 # Удаляем колонку "с2"
 df_new = df[ , -which(names(df) %in% c("c2"))]
+
+#unique and order
+unique(file[,c(1,4,26)][with(file[,c(1,4,26)], order(bty_f1lower,WW_bty_f1lower)), ])
