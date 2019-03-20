@@ -11,6 +11,20 @@ output:
     library(hflights)
     library(dplyr)
     library(ggplot2)
+    
+    starts_with(): starts with a prefix
+
+ends_with(): ends with a prefix
+
+contains(): contains a literal string
+
+matches(): matches a regular expression
+
+num_range(): a numerical range like x01, x02, x03.
+
+one_of(): variables in character vector.
+
+everything(): all variables.
 ```
 
 # Введение в dplyr[*](http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
