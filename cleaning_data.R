@@ -158,3 +158,6 @@ df_new = df[ , -which(names(df) %in% c("c2"))]
 
 #unique and order
 unique(file[,c(1,4,26)][with(file[,c(1,4,26)], order(bty_f1lower,WW_bty_f1lower)), ])
+
+# replace symbol
+gsub("\\.", " ", data)
